@@ -1,4 +1,7 @@
+// Factory fn for creating a new nodes
 const Node = (data, leftChild, rightChild) => {
+    leftChild = null;
+    rightChild = null;
     return { data, leftChild, rightChild };
 };
 
@@ -24,43 +27,98 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const Tree = (array) => {
     // Returns balanced binary tree
     const buildTree = (prepedArray, start, end) => {
+        // Base case: if the tree is empty
         if (start > end) return null;
         const mid = parseInt((start + end) / 2);
-        console.log(mid);
         const root = Node(prepedArray[mid]);
-        console.log(root);
+        // Recursively construct left subtree
         root.leftChild = buildTree(prepedArray, start, mid - 1);
+        // Recursively construct right subtree
         root.rightChild = buildTree(prepedArray, mid + 1, end);
-        prettyPrint(root);
         return root;
     };
 
     // Sort provided array and remove duplicates
     const sortedArray = array.sort((a, b) => a - b);
     const noDuplicates = [...new Set(sortedArray)];
-    console.log(noDuplicates);
     let root = buildTree(noDuplicates, 0, noDuplicates.length - 1);
 
-    // Returns node with the new value
-    const insertValue = () => {};
+    // Returns BST with a new node and it's value
+    const insertValue = (value, rootNode = root) => {
+        // Base case: if the tree is empty
+        if (rootNode === null) return (rootNode = Node(value));
+        // Otherwise recur down the tree
+        if (value < rootNode.data) {
+            rootNode.leftChild = insertValue(value, rootNode.leftChild);
+        } else {
+            rootNode.rightChild = insertValue(value, rootNode.rightChild);
+        }
+        // Return the unchanged root node
+        return rootNode;
+    };
 
-    // Delete a node with the value
-    const deleteValue = () => {};
+    const minValue = (root) => {
+        let minv = root.data;
+        while (root.leftChild != null) {
+            minv = root.leftChild.data;
+            root = root.leftChild;
+        }
+        return minv;
+    };
+
+    // Delete a node with given value
+    const deleteValue = (value, rootNode = root) => {
+        if (value === undefined) return `"${value}" not found`;
+        // Base case: if the tree is empty
+        if (rootNode === null) return rootNode;
+        // Otherwise recur down the tree
+        if (value < rootNode.data) {
+            rootNode.leftChild = deleteValue(value, rootNode.leftChild);
+        } else if (value > rootNode.data) {
+            rootNode.rightChild = deleteValue(value, rootNode.rightChild);
+            // If value is the same as root's data,
+            // then this is the node to be deleted
+        } else {
+            // Node with only one child or no child
+            if (rootNode.leftChild === null) {
+                return rootNode.rightChild;
+            } else if (rootNode.rightChild === null) {
+                return rootNode.leftChild;
+            }
+            // Node with two children: Get the inorder
+            // successor (smallest in the right subtree)
+            rootNode.data = minValue(rootNode.rightChild);
+            // Delete the inorder successor
+            rootNode.rightChild = deleteValue(
+                rootNode.data,
+                rootNode.rightChild
+            );
+        }
+        return rootNode;
+    };
 
     // Returns the node with the given value
-    const findValue = () => {};
+    const findValue = (value, rootNode = root) => {
+        if (rootNode === null) return `"${value}" not found`;
+        if (rootNode.data === value) return rootNode;
+        if (value < rootNode.data) {
+            return findValue(value, rootNode.leftChild);
+        } else if (value > rootNode.data) {
+            return findValue(value, rootNode.rightChild);
+        }
+    };
 
     // Traverse the tree in breadth-first level order
-    const levelOrder = (fn) => {};
+    const levelOrder = () => {};
 
     // Traverse the tree depth-first inorder
-    const inOrder = (fn) => {};
+    const inOrder = () => {};
 
     // Traverse the tree depth-first preorder
-    const preOrder = (fn) => {};
+    const preOrder = () => {};
 
     // Traverse the tree depth-first postorder
-    const postOrder = (fn) => {};
+    const postOrder = () => {};
 
     // Returns height of the tree
     const height = () => {};
@@ -75,6 +133,7 @@ const Tree = (array) => {
     const rebalance = () => {};
 
     return {
+        root,
         buildTree,
         insertValue,
         deleteValue,
@@ -92,3 +151,15 @@ const Tree = (array) => {
 };
 
 const gumTree = Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+gumTree.insertValue(6);
+gumTree.insertValue(50);
+gumTree.insertValue(19);
+gumTree.insertValue(30);
+gumTree.insertValue(29);
+gumTree.insertValue(28);
+gumTree.insertValue(0);
+gumTree.root;
+prettyPrint(gumTree.root);
+console.log(gumTree.findValue(9));
+console.log(gumTree.deleteValue(7));
+prettyPrint(gumTree.root);

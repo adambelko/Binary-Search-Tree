@@ -108,17 +108,56 @@ const Tree = (array) => {
         }
     };
 
-    // Traverse the tree in breadth-first level order
-    const levelOrder = () => {};
+    // Traverse the tree in breadth-first level order using a queue
+    const levelOrder = () => {
+        if (root === null) return [];
+        const queue = [];
+        queue.push(root);
+        const result = [];
+        while (queue.length > 0) {
+            const node = queue.shift();
+            result.push(node.data);
+            if (node.leftChild !== null) queue.push(node.leftChild);
+            if (node.rightChild !== null) queue.push(node.rightChild);
+        }
+        return result;
+    };
 
     // Traverse the tree depth-first inorder
-    const inOrder = () => {};
+    // Left, root, right
+    const inOrder = (rootNode = root, inOrderData = []) => {
+        if (rootNode === null) return [];
+        if (rootNode.leftChild !== null)
+            inOrder(rootNode.leftChild, inOrderData);
+        inOrderData.push(rootNode.data);
+        if (rootNode.rightChild !== null)
+            inOrder(rootNode.rightChild, inOrderData);
+        return inOrderData;
+    };
 
     // Traverse the tree depth-first preorder
-    const preOrder = () => {};
+    // Root, left, right
+    const preOrder = (rootNode = root, preOrderData = []) => {
+        if (rootNode === null) return [];
+        preOrderData.push(rootNode.data);
+        if (rootNode.leftChild !== null)
+            preOrder(rootNode.leftChild, preOrderData);
+        if (rootNode.rightChild !== null)
+            preOrder(rootNode.rightChild, preOrderData);
+        return preOrderData;
+    };
 
     // Traverse the tree depth-first postorder
-    const postOrder = () => {};
+    // Left, right, root
+    const postOrder = (rootNode = root, postOrderData = []) => {
+        if (rootNode === null) return [];
+        if (rootNode.leftChild !== null)
+            postOrder(rootNode.leftChild, postOrderData);
+        if (rootNode.rightChild !== null)
+            postOrder(rootNode.rightChild, postOrderData);
+        postOrderData.push(rootNode.data);
+        return postOrderData;
+    };
 
     // Returns height of the tree
     const height = () => {};
@@ -163,3 +202,7 @@ prettyPrint(gumTree.root);
 console.log(gumTree.findValue(9));
 console.log(gumTree.deleteValue(7));
 prettyPrint(gumTree.root);
+console.log(gumTree.levelOrder());
+console.log(gumTree.inOrder());
+console.log(gumTree.preOrder());
+console.log(gumTree.postOrder());

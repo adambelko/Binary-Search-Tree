@@ -43,7 +43,7 @@ const Tree = (array) => {
     const noDuplicates = [...new Set(sortedArray)];
     let root = buildTree(noDuplicates, 0, noDuplicates.length - 1);
 
-    // Returns BST with a new node and it's value
+    // Returns the tree with a new node
     const insertValue = (value, rootNode = root) => {
         // Base case: if the tree is empty
         if (rootNode === null) return (rootNode = Node(value));
@@ -159,17 +159,67 @@ const Tree = (array) => {
         return postOrderData;
     };
 
-    // Returns height of the tree
-    const height = () => {};
+    // Returns height of the tree, which is defined as the number of
+    // edges in the longest path from a given node to a leaf node
+    const height = (node) => {
+        if (node === null || !node) return -1;
+        const left = height(node.leftChild) + 1;
+        const right = height(node.rightChild) + 1;
+        return Math.max(left, right);
+    };
 
-    // Returns depth of the tree
-    const depth = () => {};
+    // Returns depth of the tree, is defined as the number of edges
+    // in the longest path from a given node to the tree’s root node
+    const depth = (node) => {
+        if (node === null || node === root) return 0;
+        let count = 0;
+        const currentNode = root;
+        while (currentNode !== node) {
+            count++;
+            if (currentNode.data > node.data) {
+                currentNode = currentNode.leftChild;
+            }
+            if (currentNode.data < node.data) {
+                currentNode = currentNode.rightChild;
+            }
+        }
+        return count;
+    };
 
     // Check if the tree is balanced
-    const isBalanced = () => {};
+    const isBalanced = (rootNode = root) => {
+        if (rootNode === null) return true;
+        if (
+            Math.abs(
+                height(rootNode.leftChild) - height(rootNode.rightChild)
+            ) <= 1 &&
+            isBalanced(rootNode.leftChild) === true &&
+            isBalanced(rootNode.rightChild) === true
+        ) {
+            return true;
+        }
+        return false;
+    };
 
-    // Run if the tree is unbalanced
-    const rebalance = () => {};
+    const traverse = (rootNode = root, array = []) => {
+        array.push(rootNode.data);
+        if (rootNode.leftChild !== null) traverse(rootNode.leftChild, array);
+        if (rootNode.rightChild !== null) traverse(rootNode.rightChild, array);
+        return array;
+    };
+
+    // Run this if the tree is unbalanced
+    const rebalance = () => {
+        if (isBalanced()) return;
+        const array = traverse();
+        const sortedArray = array.sort((a, b) => a - b);
+        const noDuplicates = [...new Set(sortedArray)];
+        console.log(noDuplicates);
+        console.log(root);
+        root = buildTree(noDuplicates, 0, noDuplicates.length - 1);
+        console.log(root);
+        prettyPrint(root);
+    };
 
     return {
         root,
@@ -185,7 +235,6 @@ const Tree = (array) => {
         depth,
         isBalanced,
         rebalance,
-        prettyPrint,
     };
 };
 
@@ -197,7 +246,7 @@ gumTree.insertValue(30);
 gumTree.insertValue(29);
 gumTree.insertValue(28);
 gumTree.insertValue(0);
-gumTree.root;
+gumTree.insertValue(2);
 prettyPrint(gumTree.root);
 console.log(gumTree.findValue(9));
 console.log(gumTree.deleteValue(7));
@@ -206,3 +255,6 @@ console.log(gumTree.levelOrder());
 console.log(gumTree.inOrder());
 console.log(gumTree.preOrder());
 console.log(gumTree.postOrder());
+console.log(gumTree.isBalanced());
+gumTree.rebalance();
+console.log(gumTree.isBalanced());

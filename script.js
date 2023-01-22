@@ -43,6 +43,8 @@ const Tree = (array) => {
     const noDuplicates = [...new Set(sortedArray)];
     let root = buildTree(noDuplicates, 0, noDuplicates.length - 1);
 
+    const getRoot = () => root;
+
     // Returns the tree with a new node
     const insertValue = (value, rootNode = root) => {
         // Base case: if the tree is empty
@@ -214,15 +216,11 @@ const Tree = (array) => {
         const array = traverse();
         const sortedArray = array.sort((a, b) => a - b);
         const noDuplicates = [...new Set(sortedArray)];
-        console.log(noDuplicates);
-        console.log(root);
         root = buildTree(noDuplicates, 0, noDuplicates.length - 1);
-        console.log(root);
-        prettyPrint(root);
     };
 
     return {
-        root,
+        getRoot,
         buildTree,
         insertValue,
         deleteValue,
@@ -247,10 +245,10 @@ gumTree.insertValue(29);
 gumTree.insertValue(28);
 gumTree.insertValue(0);
 gumTree.insertValue(2);
-prettyPrint(gumTree.root);
+prettyPrint(gumTree.getRoot());
 console.log(gumTree.findValue(9));
 console.log(gumTree.deleteValue(7));
-prettyPrint(gumTree.root);
+prettyPrint(gumTree.getRoot());
 console.log(gumTree.levelOrder());
 console.log(gumTree.inOrder());
 console.log(gumTree.preOrder());
@@ -258,3 +256,4 @@ console.log(gumTree.postOrder());
 console.log(gumTree.isBalanced());
 gumTree.rebalance();
 console.log(gumTree.isBalanced());
+prettyPrint(gumTree.getRoot());

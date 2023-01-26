@@ -1,0 +1,24 @@
+import prettyPrint from "./prettyPrint.js";
+import Tree from "./tree.js";
+
+const gumTree = Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+gumTree.insertValue(6);
+gumTree.insertValue(50);
+gumTree.insertValue(19);
+gumTree.insertValue(30);
+gumTree.insertValue(29);
+gumTree.insertValue(28);
+gumTree.insertValue(0);
+gumTree.insertValue(2);
+prettyPrint(gumTree.getRoot());
+console.log(gumTree.findValue(9));
+console.log(gumTree.deleteValue(7));
+prettyPrint(gumTree.getRoot());
+console.log(gumTree.levelOrder());
+console.log(gumTree.inOrder());
+console.log(gumTree.preOrder());
+console.log(gumTree.postOrder());
+console.log(gumTree.isBalanced());
+gumTree.rebalance();
+console.log(gumTree.isBalanced());
+prettyPrint(gumTree.getRoot());

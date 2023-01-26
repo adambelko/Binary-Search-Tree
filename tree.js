@@ -5,25 +5,6 @@ const Node = (data, leftChild, rightChild) => {
     return { data, leftChild, rightChild };
 };
 
-// Console log the tree structure format
-const prettyPrint = (node, prefix = "", isLeft = true) => {
-    if (node.rightChild !== null) {
-        prettyPrint(
-            node.rightChild,
-            `${prefix}${isLeft ? "│   " : "    "}`,
-            false
-        );
-    }
-    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    if (node.leftChild !== null) {
-        prettyPrint(
-            node.leftChild,
-            `${prefix}${isLeft ? "    " : "│   "}`,
-            true
-        );
-    }
-};
-
 const Tree = (array) => {
     // Returns balanced binary tree
     const buildTree = (prepedArray, start, end) => {
@@ -236,24 +217,4 @@ const Tree = (array) => {
     };
 };
 
-const gumTree = Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-gumTree.insertValue(6);
-gumTree.insertValue(50);
-gumTree.insertValue(19);
-gumTree.insertValue(30);
-gumTree.insertValue(29);
-gumTree.insertValue(28);
-gumTree.insertValue(0);
-gumTree.insertValue(2);
-prettyPrint(gumTree.getRoot());
-console.log(gumTree.findValue(9));
-console.log(gumTree.deleteValue(7));
-prettyPrint(gumTree.getRoot());
-console.log(gumTree.levelOrder());
-console.log(gumTree.inOrder());
-console.log(gumTree.preOrder());
-console.log(gumTree.postOrder());
-console.log(gumTree.isBalanced());
-gumTree.rebalance();
-console.log(gumTree.isBalanced());
-prettyPrint(gumTree.getRoot());
+export default Tree;
